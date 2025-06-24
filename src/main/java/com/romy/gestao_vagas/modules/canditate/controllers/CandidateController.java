@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.romy.gestao_vagas.modules.canditate.CanditateEntity;
+import com.romy.gestao_vagas.modules.canditate.CandidateEntity;
 
 import jakarta.validation.Valid;
 
@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/canditate")
-public class CanditateController {
+public class CandidateController {
     
     @PostMapping("")
-    public void create(@Valid @RequestBody CanditateEntity canditateEntity){
-        System.out.println("Nome" + canditateEntity.getName());
+    public void create(@Valid @RequestBody CandidateEntity candidateEntity){
+        System.out.println("Nome" + candidateEntity.getName());
     }
 
     @GetMapping("")

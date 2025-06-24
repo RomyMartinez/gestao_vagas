@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
-public class CanditateEntity {
+public class CandidateEntity {
 
     private UUID id;
     private String name;
