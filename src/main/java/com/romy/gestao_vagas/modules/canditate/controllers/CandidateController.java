@@ -1,29 +1,57 @@
 package com.romy.gestao_vagas.modules.canditate.controllers;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.romy.gestao_vagas.modules.canditate.CandidateEntity;
+import com.romy.gestao_vagas.modules.canditate.useCase.CreateCandidateUseCase;
+import com.romy.gestao_vagas.modules.canditate.useCase.ProfileCandidateUseCase;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 
 @RestController
-@RequestMapping("/canditate")
+@RequestMapping("/candidate")
 public class CandidateController {
+    @Autowired
+    private CreateCandidateUseCase createCandidateUseCase;
+
+    @Autowired
+    private ProfileCandidateUseCase profileCandidateUseCase;
     
-    @PostMapping("")
-    public void create(@Valid @RequestBody CandidateEntity candidateEntity){
-        System.out.println("Nome" + candidateEntity.getName());
+    @PostMapping("/")
+    public ResponseEntity<Object> create(@Valid @RequestBody CandidateEntity candidateEntity){
+        try {
+            var candidate = this.createCandidateUseCase.execute(candidateEntity);
+            return ResponseEntity.ok().body(candidate);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
-    @GetMapping("")
-    public String getMethodName() {
-        return new String("sada");
+    @GetMapping("/")
+    @PreAuthorize("hasRole('CANDIDATE')")
+    public ResponseEntity<Object> get(HttpServletRequest request) {
+
+        var candidateId = request.getAttribute("candidate_id");
+        try {
+            var profile = this.profileCandidateUseCase
+            .execute(UUID.fromString(candidateId.toString()));
+            return ResponseEntity.ok().body(profile);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
-    
+
+
 }
