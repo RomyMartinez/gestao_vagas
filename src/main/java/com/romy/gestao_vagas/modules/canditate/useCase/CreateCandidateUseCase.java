@@ -5,8 +5,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.romy.gestao_vagas.exceptions.UserFoundException;
-import com.romy.gestao_vagas.modules.canditate.CandidateEntity;
 import com.romy.gestao_vagas.modules.canditate.CandidateRepository;
+import com.romy.gestao_vagas.modules.canditate.entity.CandidateEntity;
 
 @Service
 public class CreateCandidateUseCase {
