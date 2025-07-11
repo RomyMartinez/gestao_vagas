@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class SecurityConfig {
 
     @Autowired
-    private SecurityFilter securityFilter;
+    private SecurityCompanyFilter securityCompanyFilter;
 
     @Autowired
     private SecurityCandidateFilter securityCandidateFilter;
@@ -24,6 +24,8 @@ public class SecurityConfig {
         "/v3/api-docs/**",
         "/swagger-ui/**",
         "/swagger-resources/**",
+        "/actuator/**",
+        "/actuator/prometheus"
     };
 
     @Bean
@@ -38,7 +40,7 @@ public class SecurityConfig {
             auth.anyRequest().authenticated();
         })
         .addFilterBefore(securityCandidateFilter, BasicAuthenticationFilter.class)
-        .addFilterBefore(securityFilter,  BasicAuthenticationFilter.class);
+        .addFilterBefore(securityCompanyFilter,  BasicAuthenticationFilter.class);
         return http.build();
         
     }

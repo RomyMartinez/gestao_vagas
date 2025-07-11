@@ -18,13 +18,11 @@ public class JWTProvider {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         
         try {
-            var tokenDecoded = JWT.require(algorithm)
+            return JWT.require(algorithm)
             .build()
             .verify(token);
             
-            return tokenDecoded;
         } catch (JWTVerificationException ex) {
-            ex.printStackTrace();
             return null;
         }
 

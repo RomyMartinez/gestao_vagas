@@ -49,9 +49,8 @@ public class AuthCandidateUseCase {
             .withExpiresAt(Instant.now().plus(Duration.ofHours(2))) // Token valid for 1 hour
             .sign(algorithm);
 
-        var authCandidateResponse = AuthCandidateResponseDTO.builder()
+        return AuthCandidateResponseDTO.builder()
             .access_token(token)
             .build();
-        return authCandidateResponse;
     }
 }

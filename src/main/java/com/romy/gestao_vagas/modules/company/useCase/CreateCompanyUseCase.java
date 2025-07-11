@@ -19,7 +19,7 @@ public class CreateCompanyUseCase {
     public CompanyEntity execute(CompanyEntity companyEntity){
         this.companyRepository.
         findByUsernameOrEmail(companyEntity.getUsername(), companyEntity.getEmail())
-        .ifPresent((user) -> {
+        .ifPresent(user -> {
             throw new UserFoundException();
         });
             var password = passwordEncoder.encode(companyEntity.getPassword());

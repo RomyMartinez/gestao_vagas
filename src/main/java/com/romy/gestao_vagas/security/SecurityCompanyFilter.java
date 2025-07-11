@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-public class SecurityFilter extends OncePerRequestFilter {
+public class SecurityCompanyFilter extends OncePerRequestFilter {
     @Autowired
     private JWTProvider jwtProvider;
 
@@ -27,11 +27,9 @@ public class SecurityFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader("Authorization");
-        //SecurityContextHolder.getContext().setAuthentication(null);
         System.out.println("Authorization Header: " + header);
 
-        if(request.getRequestURI().startsWith("/company")){
-            if(header != null){
+        if(request.getRequestURI().startsWith("/company") && header != null){
                 var token = this.jwtProvider.validateToken(header);
 
                 if(token == null){
@@ -56,7 +54,6 @@ public class SecurityFilter extends OncePerRequestFilter {
                     );
 
                 SecurityContextHolder.getContext().setAuthentication(auth);
-            }
         }
 
         // Continua a execução da requisição

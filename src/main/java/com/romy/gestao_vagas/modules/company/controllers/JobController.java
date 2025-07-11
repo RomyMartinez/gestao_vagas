@@ -3,6 +3,7 @@ package com.romy.gestao_vagas.modules.company.controllers;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,23 +34,29 @@ public class JobController {
     @PreAuthorize("hasRole('COMPANY')")
     @Tag(name = "Jobs", description = "Job Management")
     @Operation(summary = "Create a new job", description = "Create a new job for the company")
-    @ApiResponses({
+    @ApiResponses(
         @ApiResponse(responseCode = "200", content = {
             @Content(schema =  @Schema(implementation = JobEntity.class))
-        }),
-    })
+        })
+    )
     @SecurityRequirement(name = "jwt_auth")
-    public JobEntity create(@Valid @RequestBody CreateJobDTO createJobDTO, HttpServletRequest request) {
+    public ResponseEntity<Object> create(@Valid @RequestBody CreateJobDTO createJobDTO, HttpServletRequest request) {
         var companyId = request.getAttribute("company_id");
 
+        try {
+            var result = JobEntity.builder()
+                    .description(createJobDTO.getDescription())
+                    .benefits(createJobDTO.getBenefits())
+                    .level(createJobDTO.getLevel())
+                    .companyId(UUID.fromString(companyId.toString()))
+                    .build();
 
-        JobEntity jobEntity = JobEntity.builder()
-                .description(createJobDTO.getDescription())
-                .benefits(createJobDTO.getBenefits())
-                .level(createJobDTO.getLevel())
-                .companyId(UUID.fromString(companyId.toString()))
-                .build();
+            result = this.createJobUseCase.execute(result);
 
-        return this.createJobUseCase.execute(jobEntity);
+            return ResponseEntity.ok().body(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 }

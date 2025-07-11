@@ -19,7 +19,7 @@ public class SwaggerConfig {
                         )
                         .schemaRequirement("jwt_auth", securityScheme())
                         ;
-                };
+                }
 
 
     private SecurityScheme securityScheme() {

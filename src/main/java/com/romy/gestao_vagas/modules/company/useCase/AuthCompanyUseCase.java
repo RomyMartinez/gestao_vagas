@@ -52,11 +52,10 @@ public class AuthCompanyUseCase {
             .sign(algorithm);
         
 
-        var authCompanyResponseDTO = AuthCompanyResponseDTO.builder()
+        return AuthCompanyResponseDTO.builder()
             .access_token(token)
             .expires_in(duration.toEpochMilli()) // 2 hours in seconds
             .build();
 
-        return authCompanyResponseDTO;
     }   
 }

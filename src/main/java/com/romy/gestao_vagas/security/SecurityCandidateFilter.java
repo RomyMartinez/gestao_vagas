@@ -30,8 +30,7 @@ public class SecurityCandidateFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(null);
             String header = request.getHeader("Authorization");
 
-            if(request.getRequestURI().startsWith("/candidate")){
-                if(header != null){
+            if(request.getRequestURI().startsWith("/candidate") && header != null){
                     var token = this.jwtProvider.validateToken(header);
                     if(token == null){
                          response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -54,7 +53,6 @@ public class SecurityCandidateFilter extends OncePerRequestFilter {
                     );
 
                 SecurityContextHolder.getContext().setAuthentication(auth);
-                }
             }
 
 
