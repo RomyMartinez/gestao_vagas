@@ -27,7 +27,6 @@ public class SecurityCompanyFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader("Authorization");
-        System.out.println("Authorization Header: " + header);
 
         if(request.getRequestURI().startsWith("/company") && header != null){
                 var token = this.jwtProvider.validateToken(header);
